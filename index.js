@@ -1,16 +1,17 @@
-const js_socket = require("ws")
 
+const WebSocket = require('ws');
 
 // Establishing Connection 
 let sock_cache = []
-const sock = new js_socket.Server({port:88})
+const PORT = process.env.PORT; 
+const ws = new WebSocket.Server({ port: PORT || 3000 });
 
 // Events 
-sock.on("connection",function(client){
+ws.on("connection",function(client){
     console.log('New Connection')
     client.on('message',function(message){
-        sock.clients.forEach(function each(cli) {
-            if (cli !== sock) {
+        ws.clients.forEach(function each(cli) {
+            if (cli !== ws) {
               client.send(message);
             }
         })
